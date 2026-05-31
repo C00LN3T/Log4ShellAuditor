@@ -2,21 +2,18 @@
 FROM golang:1.21-alpine AS go-build
 WORKDIR /app
 COPY go.mod .
-# COPY main.go agent.go tools.go memory.go
 COPY . .
-RUN go build -o agent .
+RUN go build -o agent ./cmd/agent
 
 # Stage 2: Compile the Java Exploit payload
 FROM eclipse-temurin:17-jdk-alpine AS java-build
 WORKDIR /app
-COPY Exploit.java .
+COPY internal/payload/Exploit.java .
 RUN javac Exploit.java
 
 # Stage 3: Package together
 FROM golang:1.21-alpine
 WORKDIR /app
-# We need java executable locally only if we want to run Java target app locally,
-# but since the target runs in its own container, we only need basic tools like curl (optional)
 RUN apk add --no-cache curl
 COPY --from=go-build /app/agent .
 COPY --from=java-build /app/Exploit.class .

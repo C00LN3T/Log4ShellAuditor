@@ -1,6 +1,9 @@
 package main
 
 import (
+	"aeon-arsenal/internal/agent"
+	"aeon-arsenal/pkg/oob"
+	"aeon-arsenal/pkg/target"
 	"fmt"
 	"os"
 	"time"
@@ -27,12 +30,12 @@ func main() {
 	_ = os.RemoveAll("reports")
 
 	// 1. Запуск LDAP TCP-слушателя на порту :1389 для фиксации и перенаправления JNDI
-	StartLDAPCallbackListener()
-	defer StopLDAPCallbackListener()
+	oob.StartLDAPCallbackListener()
+	defer oob.StopLDAPCallbackListener()
 
 	// 2. Запуск HTTP-сервера на порту :8000 для раздачи Exploit.class и приема Loot
-	StartHTTPServer()
-	defer StopHTTPServer()
+	oob.StartHTTPServer()
+	defer oob.StopHTTPServer()
 
 	// 3. Управление запуском Java-цели
 	agentHost := os.Getenv("AGENT_HOST")
@@ -42,12 +45,12 @@ func main() {
 		defer os.Remove("flag.txt")
 
 		fmt.Println("[*] Запуск скомпилированного уязвимого Java Spring приложения локально...")
-		err := StartJavaApp()
+		err := target.StartJavaApp()
 		if err != nil {
 			fmt.Printf("[!] КРИТИЧЕСКАЯ ОШИБКА: Не удалось запустить Java-приложение: %v\n", err)
 			return
 		}
-		defer StopJavaApp()
+		defer target.StopJavaApp()
 
 		fmt.Println("[*] Ожидание инициализации веб-контекста Spring (3.5 сек)...")
 		time.Sleep(3500 * time.Millisecond)
@@ -64,6 +67,6 @@ func main() {
 	}
 
 	// 4. Инициализация и запуск агента-аудитора
-	agent := NewStandaloneExecutor(targetURL)
-	agent.Run()
+	exec := agent.NewStandaloneExecutor(targetURL)
+	exec.Run()
 }

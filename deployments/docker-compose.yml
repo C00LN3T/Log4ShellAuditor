@@ -3,7 +3,7 @@ version: '3.8'
 services:
   vulnerable-app:
     build:
-      context: ./vulnerable-app
+      context: ../test/vulnerable-app
       dockerfile: Dockerfile.app
     ports:
       - "8080:8080"
@@ -13,8 +13,8 @@ services:
 
   reflective-agent:
     build:
-      context: .
-      dockerfile: Dockerfile.agent
+      context: ..
+      dockerfile: deployments/Dockerfile.agent
     environment:
       - TARGET_URL=http://vulnerable-app:8080
       - AGENT_HOST=reflective-agent
