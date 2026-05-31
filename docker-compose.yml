@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  vulnerable-app:
+    build:
+      context: ./vulnerable-app
+      dockerfile: Dockerfile.app
+    ports:
+      - "8080:8080"
+    networks:
+      lab-net:
+        ipv4_address: 172.20.0.10
+
+  reflective-agent:
+    build:
+      context: .
+      dockerfile: Dockerfile.agent
+    environment:
+      - TARGET_URL=http://vulnerable-app:8080
+      - AGENT_HOST=reflective-agent
+    ports:
+      - "1389:1389"
+      - "8000:8000"
+    networks:
+      lab-net:
+        ipv4_address: 172.20.0.20
+    depends_on:
+      - vulnerable-app
+
+networks:
+  lab-net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16

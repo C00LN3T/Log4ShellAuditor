@@ -1,0 +1,44 @@
+# Compiled binaries
+aeon-arsenal
+test_agent
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Java / Maven build output
+**/target/
+*.class
+
+# Log files and runtime files
+*.log
+java_target.log
+remediation.properties
+
+# Ignore reports directory content except .gitkeep
+reports/*
+!reports/.gitkeep
+
+# Backup files
+*.bak
+*~
+*.swp
+
+# IDE and Project Settings
+.idea/
+.vscode/
+*.suo
+*.ntvsca
+*.njsproj
+*.sln
+*.sw?
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
