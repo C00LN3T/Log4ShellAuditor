@@ -105,8 +105,96 @@ $$\text{EfficiencyScore}(a) = \frac{SuccessCount_a}{UsageCount_a}$$
 | **9** | `reporter` | Генерация markdown-отчета. | Документ `reports/cve_2021_44228_report.md` сформирован ($b(S_{report}) = 1$). |
 | **10**| `stop` | Терминация. | Завершение работы. |
 
----
+## 📊 Блок-схемы алгоритмов
 
+### 1. Общий алгоритм работы агента (Sense-Think-Act Loop)
+Данная схема описывает непрерывный жизненный цикл функционирования агента: от запуска и инициализации базы знаний до завершения сессии аудита.
+
+```mermaid
+flowchart TD
+    Start([Начало]) --> Init[Инициализация StandaloneExecutor и KnowledgeBase]
+    Init --> LoopStart{Цикл принятия решений}
+    
+    %% Think Phase
+    LoopStart --> Think[Think: Выбор оптимального инструмента a = Think()]
+    
+    %% Branch on Stop
+    Think --> IsStop{a == 'stop'?}
+    IsStop -- Да --> Terminate([Завершение работы агента])
+    
+    %% Act Phase
+    IsStop -- Нет --> FetchTool[Загрузка эффектора из реестра Tools[a]]
+    FetchTool --> Execute[Act: Выполнение Tool.Execute]
+    
+    %% Sense Phase
+    Execute --> Sense[Sense: Получение обратной связи из внешней среды]
+    Sense --> UpdateStats[Обновление статистики ToolStats в памяти]
+    UpdateStats --> RecordObs[Запись наблюдения в Observations]
+    
+    %% Wait
+    RecordObs --> Delay[Задержка 800 мс]
+    Delay --> LoopStart
+```
+
+### 2. Алгоритм когнитивного ядра принятия решений (Think)
+Данная схема детально описывает логику выбора следующего шага на основе текущего накопленного вектора доверия (Belief State) внутри функции `Think()`:
+
+```mermaid
+flowchart TD
+    Start([Вызов Think()]) --> Lock[Блокировка памяти RLock()]
+    Lock --> ReadState[Чтение вектора доверия b]
+    
+    %% Step 1
+    ReadState --> PortScan{port_scanner выполнен?}
+    PortScan -- Нет --> RetPortScan[Выбрать 'port_scanner']
+    
+    %% Step 2
+    PortScan -- Да --> Discovery{Найдено векторов ввода?}
+    Discovery -- Нет --> RetDiscovery[Выбрать 'discovery']
+    
+    %% Step 3
+    Discovery -- Да --> Payload{Сгенерирована эксплоит-сигнатура?}
+    Payload -- Нет --> RetPayload[Выбрать 'payload_generator']
+    
+    %% Step 4 (Exploit)
+    Payload -- Да --> Loot{Флаг RCE перехвачен?}
+    Loot -- Нет --> ProberStats{Была попытка prober?}
+    
+    ProberStats -- Нет --> RetProber[Выбрать 'prober']
+    ProberStats -- Да --> FuzzerStats{Fuzzer выполнен?}
+    FuzzerStats -- Нет --> RetFuzzer[Выбрать 'semantic_fuzzer']
+    FuzzerStats -- Да --> RetProber
+    
+    %% Step 5
+    Loot -- Да --> Patch{Патч применен?}
+    Patch -- Нет --> RetRemediator[Выбрать 'remediator']
+    
+    %% Step 6
+    Patch -- Да --> Verify{Патч верифицирован?}
+    Verify -- Нет --> RetProberVerify[Выбрать 'prober' в режиме верификации]
+    
+    %% Step 7
+    Verify -- Да --> Report{Отчет сформирован?}
+    Report -- Нет --> RetReporter[Выбрать 'reporter']
+    
+    %% Step 8
+    Report -- Да --> RetStop[Выбрать 'stop']
+    
+    %% Return Statements
+    RetPortScan --> Unlock[Разблокировка RUnlock()]
+    RetDiscovery --> Unlock
+    RetPayload --> Unlock
+    RetProber --> Unlock
+    RetFuzzer --> Unlock
+    RetRemediator --> Unlock
+    RetProberVerify --> Unlock
+    RetReporter --> Unlock
+    RetStop --> Unlock
+    
+    Unlock --> End([Возврат выбранного инструмента])
+```
+
+---
 
 ## 📦 Спецификация уязвимого Java-приложения
 

@@ -105,6 +105,95 @@ This is leveraged for adaptive pathfinding: if the initial exploitation attempt 
 | **9** | `reporter` | Write compliance report. | Audit report generated at `reports/cve_2021_44228_report.md` ($b(S_{report}) = 1$). |
 | **10**| `stop` | Termination. | Loop complete. |
 
+## 📊 Algorithm Flowcharts
+
+### 1. General Agent Lifecycle Flowchart (Sense-Think-Act Loop)
+This diagram illustrates the continuous runtime lifecycle of the agent, starting from initialization up to compliance report compilation and session shutdown.
+
+```mermaid
+flowchart TD
+    Start([Start]) --> Init[Initialize StandaloneExecutor and KnowledgeBase]
+    Init --> LoopStart{Cognitive Loop}
+    
+    %% Think Phase
+    LoopStart --> Think[Think: Select optimal effector action a = Think()]
+    
+    %% Branch on Stop
+    Think --> IsStop{a == 'stop'?}
+    IsStop -- Yes --> Terminate([Agent Loop Terminated])
+    
+    %% Act Phase
+    IsStop -- No --> FetchTool[Retrieve effector from Tools[a] registry]
+    FetchTool --> Execute[Act: Run Tool.Execute]
+    
+    %% Sense Phase
+    Execute --> Sense[Sense: Capture environment feedback]
+    Sense --> UpdateStats[Update ToolStats utility values in Memory]
+    UpdateStats --> RecordObs[Record event in Observations]
+    
+    %% Wait
+    RecordObs --> Delay[Wait 800 ms]
+    Delay --> LoopStart
+```
+
+### 2. Decision Core Algorithm Flowchart (Think)
+This diagram maps out the precise decision logic executed by the `Think()` function at each iteration of the loop, based on the current Belief State:
+
+```mermaid
+flowchart TD
+    Start([Think() invoked]) --> Lock[Acquire memory RLock()]
+    Lock --> ReadState[Read Belief State b]
+    
+    %% Step 1
+    ReadState --> PortScan{port_scanner run?}
+    PortScan -- No --> RetPortScan[Select 'port_scanner']
+    
+    %% Step 2
+    PortScan -- Yes --> Discovery{Any input vectors found?}
+    Discovery -- No --> RetDiscovery[Select 'discovery']
+    
+    %% Step 3
+    Discovery -- Yes --> Payload{Exploit payload generated?}
+    Payload -- No --> RetPayload[Select 'payload_generator']
+    
+    %% Step 4 (Exploit)
+    Payload -- Yes --> Loot{RCE flag captured?}
+    Loot -- No --> ProberStats{prober previously tried?}
+    
+    ProberStats -- No --> RetProber[Select 'prober']
+    ProberStats -- Yes --> FuzzerStats{semantic_fuzzer run?}
+    FuzzerStats -- No --> RetFuzzer[Select 'semantic_fuzzer']
+    FuzzerStats -- Yes --> RetProber
+    
+    %% Step 5
+    Loot -- Yes --> Patch{Patch applied?}
+    Patch -- No --> RetRemediator[Select 'remediator']
+    
+    %% Step 6
+    Patch -- Yes --> Verify{Patch verified?}
+    Verify -- No --> RetProberVerify[Select 'prober' in verification mode]
+    
+    %% Step 7
+    Verify -- Yes --> Report{Report generated?}
+    Report -- No --> RetReporter[Select 'reporter']
+    
+    %% Step 8
+    Report -- Yes --> RetStop[Select 'stop']
+    
+    %% Return Statements
+    RetPortScan --> Unlock[Release memory RUnlock()]
+    RetDiscovery --> Unlock
+    RetPayload --> Unlock
+    RetProber --> Unlock
+    RetFuzzer --> Unlock
+    RetRemediator --> Unlock
+    RetProberVerify --> Unlock
+    RetReporter --> Unlock
+    RetStop --> Unlock
+    
+    Unlock --> End([Return selected tool identifier])
+```
+
 ---
 
 ## 📦 Vulnerable Java Application Specification
