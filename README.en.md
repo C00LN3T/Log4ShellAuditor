@@ -219,13 +219,17 @@ When receiving `${jndi:ldap://...}`, log4j core initiates LDAP resolution to the
 
 ## 🚀 Setup & Launch
 
-### Prerequisites
+The simulation lab supports two deployment modes: local execution directly on the host machine (Option A) or fully containerized execution in an isolated network environment using Docker Compose (Option B).
+
+### Option A. Local Launch on Host Machine
+
+#### Prerequisites
 * **JDK 17+** (verify via `java -version`)
 * **Maven 3.8+** (verify via `mvn -version`)
 * **Go 1.21+** (verify via `go version`)
 
-### 1. Build Java Target Microservice
-Compile target Java app to a executable fat JAR:
+#### 1. Build Java Target Microservice
+Compile target Java app to an executable fat JAR:
 ```bash
 cd test/vulnerable-app
 mvn clean package
@@ -233,13 +237,13 @@ cd ../..
 ```
 *Verify that `test/vulnerable-app/target/vulnerable-app-simple-1.0.0.jar` was created.*
 
-### 2. Build Exploit Payload
+#### 2. Build Exploit Payload
 Compile the Java class served by the HTTP webserver:
 ```bash
 javac internal/payload/Exploit.java
 ```
 
-### 3. Build & Run Autonomous Sandbox
+#### 3. Build & Run Autonomous Sandbox
 Run Go main loop using interpretation on-the-fly:
 ```bash
 go run ./cmd/agent
@@ -249,6 +253,32 @@ Or compile to a standalone executable binary:
 ```bash
 go build -o test_agent ./cmd/agent
 ./test_agent
+```
+
+---
+
+### Option B. Run in Isolated Container Sandbox (Docker Compose)
+
+This method does not require installing Go, Java, or Maven on your host machine. The entire lab setup builds and runs automatically inside an isolated virtual network sub-segmented at `172.20.0.0/16`.
+
+#### Prerequisites
+* **Docker** and **Docker Compose** plugin installed (verify via `docker compose version`).
+
+#### 1. Launch the Lab
+Build the container images and spawn the services with a single command from the project root:
+```bash
+docker compose -f deployments/docker-compose.yml up --build
+```
+
+#### 2. Lifecycle & Internal Processes:
+* `vulnerable-app` compiles the Spring Boot application, mounts internal directories, writes the secret flag into `/var/lib/secret/flag.txt`, and serves endpoints on port `:8080`.
+* `reflective-agent` builds the Go compiler stage, compiles `Exploit.java`, runs LDAP/HTTP listeners, and launches the cognitive loop.
+* The local directory `reports/` on your host filesystem is mounted to the agent container — the final GOST compliance report is automatically stored in your host folder at `reports/cve_2021_44228_report.md`.
+
+#### 3. Stop the Sandbox
+To clean up container environments and release network configurations, run:
+```bash
+docker compose -f deployments/docker-compose.yml down
 ```
 
 ---

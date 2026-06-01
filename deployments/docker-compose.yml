@@ -26,6 +26,8 @@ services:
         ipv4_address: 172.20.0.20
     depends_on:
       - vulnerable-app
+    volumes:
+      - ../reports:/app/reports
 
 networks:
   lab-net:
