@@ -31,10 +31,6 @@ graph TD
         E -->|Воздействие| F((Java Spring Boot Target))
         F -.->|Обратный канал OOB| A
     end
-    
-    style B fill:#111,stroke:#00ADD8,stroke-width:2px;
-    style C fill:#111,stroke:#ED8B00,stroke-width:2px;
-    style F fill:#222,stroke:#C71A36,stroke-width:3px;
 ```
 
 ---
@@ -123,7 +119,7 @@ flowchart TD
     IsStop -- Да --> Terminate([Завершение работы агента])
     
     %% Act Phase
-    IsStop -- Нет --> FetchTool[Загрузка эффектора из реестра Tools[a]]
+    IsStop -- Нет --> FetchTool["Загрузка эффектора из реестра Tools[a]"]
     FetchTool --> Execute[Act: Выполнение Tool.Execute]
     
     %% Sense Phase

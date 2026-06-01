@@ -31,10 +31,6 @@ graph TD
         E -->|Impact| F((Java Spring Boot Target))
         F -.->|Out-of-Band OOB Channel| A
     end
-    
-    style B fill:#111,stroke:#00ADD8,stroke-width:2px;
-    style C fill:#111,stroke:#ED8B00,stroke-width:2px;
-    style F fill:#222,stroke:#C71A36,stroke-width:3px;
 ```
 
 ---
@@ -123,7 +119,7 @@ flowchart TD
     IsStop -- Yes --> Terminate([Agent Loop Terminated])
     
     %% Act Phase
-    IsStop -- No --> FetchTool[Retrieve effector from Tools[a] registry]
+    IsStop -- No --> FetchTool["Retrieve effector from Tools[a] registry"]
     FetchTool --> Execute[Act: Run Tool.Execute]
     
     %% Sense Phase
