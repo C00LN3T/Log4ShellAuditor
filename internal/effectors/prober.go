@@ -86,7 +86,7 @@ func (t *ToolProber) Execute(target string, kb *core.KnowledgeBase) string {
 		kb.CurrentPhase = "Remediation"
 		kb.Mu.Unlock()
 
-		return fmt.Sprintf("SUCCESS: LDAP Callback получен на порту 1389. RCE отработал. Перехваченный флаг: %s.", capturedLoot)
+		return fmt.Sprintf("SUCCESS: LDAP Callback получен на порту 1389 (Loot: %s).", capturedLoot)
 	}
 
 	return "FAILURE: Атака не удалась. Уязвимость не эксплуатирована или флаг не перехвачен."

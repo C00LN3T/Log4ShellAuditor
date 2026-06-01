@@ -2,8 +2,8 @@ package main
 
 import (
 	"aeon-arsenal/internal/agent"
+	"aeon-arsenal/pkg/jvm"
 	"aeon-arsenal/pkg/oob"
-	"aeon-arsenal/pkg/target"
 	"fmt"
 	"os"
 	"time"
@@ -45,12 +45,12 @@ func main() {
 		defer os.Remove("flag.txt")
 
 		fmt.Println("[*] Запуск скомпилированного уязвимого Java Spring приложения локально...")
-		err := target.StartJavaApp()
+		err := jvm.StartJavaApp()
 		if err != nil {
 			fmt.Printf("[!] КРИТИЧЕСКАЯ ОШИБКА: Не удалось запустить Java-приложение: %v\n", err)
 			return
 		}
-		defer target.StopJavaApp()
+		defer jvm.StopJavaApp()
 
 		fmt.Println("[*] Ожидание инициализации веб-контекста Spring (3.5 сек)...")
 		time.Sleep(3500 * time.Millisecond)

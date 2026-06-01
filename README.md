@@ -56,7 +56,7 @@ graph TD
   * `ToolRemediator` — Автоматический патчинг.
   * `ToolReporter` — Формирование отчета в соответствии с ГОСТ Р 56939-2016.
 * **[pkg/oob/](pkg/oob/)** — Out-of-band слушатели (LDAP и HTTP).
-* **[pkg/target/](pkg/target/)** — Управление жизненным циклом и перезапуском локальной Java-цели.
+* **[pkg/jvm/](pkg/jvm/)** — Управление жизненным циклом и перезапуском локальной Java-цели.
 * **[deployments/](deployments/)** — Конфигурационные файлы для развертывания (Docker, Compose).
 * **[test/vulnerable-app/](test/vulnerable-app/)** — Уязвимое тестовое Java Spring Boot приложение.
 

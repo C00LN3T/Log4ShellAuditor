@@ -56,7 +56,7 @@ The agent's software structure is developed following Hexagonal Architecture (Po
   * `ToolRemediator` — Automated hot patching.
   * `ToolReporter` — Security audit report generation.
 * **[pkg/oob/](pkg/oob/)** — Out-of-band LDAP and HTTP servers.
-* **[pkg/target/](pkg/target/)** — Manages compiled local Java simulation target process.
+* **[pkg/jvm/](pkg/jvm/)** — Manages compiled local Java simulation target process.
 * **[deployments/](deployments/)** — Contains Docker and Compose configuration files.
 * **[test/vulnerable-app/](test/vulnerable-app/)** — Target vulnerable Java Spring Boot microservice.
 

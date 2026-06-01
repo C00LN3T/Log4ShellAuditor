@@ -2,7 +2,7 @@ package effectors
 
 import (
 	"aeon-arsenal/internal/core"
-	"aeon-arsenal/pkg/target"
+	"aeon-arsenal/pkg/jvm"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -35,7 +35,7 @@ func (t *ToolRemediator) Execute(targetURL string, kb *core.KnowledgeBase) strin
 		resp.Body.Close()
 	} else {
 		fmt.Printf("[ЭФФЕКТОР:remediator] Предупреждение: Не удалось связаться с /remediate эндпоинтом: %v. Попытка локального перезапуска...\n", err)
-		_ = target.StartJavaApp()
+		_ = jvm.StartJavaApp()
 	}
 
 	time.Sleep(2000 * time.Millisecond)
