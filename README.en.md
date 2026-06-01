@@ -1,4 +1,4 @@
-# 🤖 AEON ARSENAL: Autonomous Reactive Pentest Agent
+# 🤖 AUTO AUDIT: Autonomous Reactive Pentest Agent
 
 *Read this in other languages: [English](README.en.md), [Русский](README.md).*
 
@@ -13,7 +13,7 @@
 
 ## 🧭 Overview
 
-**AEON ARSENAL** is a software system demonstrating a **100% autonomous closed-loop (Sense-Think-Act)** cycle of vulnerability discovery, validation, exploitation, auto-remediation (self-healing), and compliance reporting for the critical **Log4Shell** vulnerability (**CVE-2021-44228**).
+**AUTO AUDIT** is a software system demonstrating a **100% autonomous closed-loop (Sense-Think-Act)** cycle of vulnerability discovery, validation, exploitation, auto-remediation (self-healing), and compliance reporting for the critical **Log4Shell** vulnerability (**CVE-2021-44228**).
 
 The sandbox spawns a local target web application built on **Java Spring Boot**, an embedded **LDAP TCP Callback Listener**, and a cognitive **Go agent** kernel, which coordinates actions in a partially observable environment (*Partially Observable Markov Decision Process — POMDP*).
 

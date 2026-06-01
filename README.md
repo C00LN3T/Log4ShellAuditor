@@ -1,4 +1,4 @@
-# 🤖 AEON ARSENAL: Autonomous Reactive Pentest Agent
+# 🤖 AUTO AUDIT: Autonomous Reactive Pentest Agent
 
 *Read this in other languages: [English](README.en.md), [Русский](README.md).*
 
@@ -13,7 +13,7 @@
 
 ## 🧭 Общие сведения
 
-**AEON ARSENAL** — это программный комплекс, демонстрирующий **100% автономный замкнутый цикл (Sense-Think-Act)** выявления, проверки, эксплуатации, автоматического исправления (*Self-Healing / Auto-Remediation*) и комплаенс-отчетности для критической уязвимости **Log4Shell (CVE-2021-44228 / БДУ ФСТЭК:2021-06103)**.
+**AUTO AUDIT** — это программный комплекс, демонстрирующий **100% автономный замкнутый цикл (Sense-Think-Act)** выявления, проверки, эксплуатации, автоматического исправления (*Self-Healing / Auto-Remediation*) и комплаенс-отчетности для критической уязвимости **Log4Shell (CVE-2021-44228 / БДУ ФСТЭК:2021-06103)**.
 
 Стенд развертывает локальное веб-приложение на базе **Java Spring Boot**, встроенный **LDAP TCP Callback Listener** и когнитивное ядро **Go-агента**, принимающего решения в условиях частичной наблюдаемости внешней среды (*Partially Observable Markov Decision Process — POMDP*).
 

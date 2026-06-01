@@ -1,9 +1,9 @@
 package main
 
 import (
-	"aeon-arsenal/internal/agent"
-	"aeon-arsenal/pkg/jvm"
-	"aeon-arsenal/pkg/oob"
+	"auto-audit/internal/agent"
+	"auto-audit/pkg/jvm"
+	"auto-audit/pkg/oob"
 	"fmt"
 	"os"
 	"time"

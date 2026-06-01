@@ -1,8 +1,8 @@
 package agent
 
 import (
-	"aeon-arsenal/internal/core"
-	"aeon-arsenal/internal/effectors"
+	"auto-audit/internal/core"
+	"auto-audit/internal/effectors"
 	"fmt"
 	"strings"
 	"time"

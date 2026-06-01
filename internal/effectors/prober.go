@@ -1,8 +1,8 @@
 package effectors
 
 import (
-	"aeon-arsenal/internal/core"
-	"aeon-arsenal/pkg/oob"
+	"auto-audit/internal/core"
+	"auto-audit/pkg/oob"
 	"fmt"
 	"net/http"
 	"time"

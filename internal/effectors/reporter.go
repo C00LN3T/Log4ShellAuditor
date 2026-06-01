@@ -1,7 +1,7 @@
 package effectors
 
 import (
-	"aeon-arsenal/internal/core"
+	"auto-audit/internal/core"
 	"fmt"
 	"io/ioutil"
 	"os"

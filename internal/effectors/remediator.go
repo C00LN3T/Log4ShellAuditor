@@ -1,8 +1,8 @@
 package effectors
 
 import (
-	"aeon-arsenal/internal/core"
-	"aeon-arsenal/pkg/jvm"
+	"auto-audit/internal/core"
+	"auto-audit/pkg/jvm"
 	"fmt"
 	"io/ioutil"
 	"net/http"
