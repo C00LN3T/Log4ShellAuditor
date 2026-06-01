@@ -116,7 +116,7 @@ flowchart TD
     Init --> LoopStart{Cognitive Loop}
     
     %% Think Phase
-    LoopStart --> Think[Think: Select optimal effector action a = Think()]
+    LoopStart --> Think["Think: Select optimal effector action a = Think()"]
     
     %% Branch on Stop
     Think --> IsStop{a == 'stop'?}
@@ -141,7 +141,7 @@ This diagram maps out the precise decision logic executed by the `Think()` funct
 
 ```mermaid
 flowchart TD
-    Start([Think() invoked]) --> Lock[Acquire memory RLock()]
+    Start(["Think() invoked"]) --> Lock["Acquire memory RLock()"]
     Lock --> ReadState[Read Belief State b]
     
     %% Step 1
@@ -181,7 +181,7 @@ flowchart TD
     Report -- Yes --> RetStop[Select 'stop']
     
     %% Return Statements
-    RetPortScan --> Unlock[Release memory RUnlock()]
+    RetPortScan --> Unlock["Release memory RUnlock()"]
     RetDiscovery --> Unlock
     RetPayload --> Unlock
     RetProber --> Unlock

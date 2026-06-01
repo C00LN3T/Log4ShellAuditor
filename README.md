@@ -116,7 +116,7 @@ flowchart TD
     Init --> LoopStart{Цикл принятия решений}
     
     %% Think Phase
-    LoopStart --> Think[Think: Выбор оптимального инструмента a = Think()]
+    LoopStart --> Think["Think: Выбор оптимального инструмента a = Think()"]
     
     %% Branch on Stop
     Think --> IsStop{a == 'stop'?}
@@ -141,7 +141,7 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    Start([Вызов Think()]) --> Lock[Блокировка памяти RLock()]
+    Start(["Вызов Think()"]) --> Lock["Блокировка памяти RLock()"]
     Lock --> ReadState[Чтение вектора доверия b]
     
     %% Step 1
@@ -181,7 +181,7 @@ flowchart TD
     Report -- Да --> RetStop[Выбрать 'stop']
     
     %% Return Statements
-    RetPortScan --> Unlock[Разблокировка RUnlock()]
+    RetPortScan --> Unlock["Разблокировка RUnlock()"]
     RetDiscovery --> Unlock
     RetPayload --> Unlock
     RetProber --> Unlock
