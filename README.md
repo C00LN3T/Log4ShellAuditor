@@ -8,6 +8,7 @@
 [![Java Version](https://img.shields.io/badge/Java-17+-ED8B00?style=for-the-badge&logo=openjdk)](https://openjdk.org)
 [![Maven](https://img.shields.io/badge/Maven-3.8+-C71A36?style=for-the-badge&logo=apachemaven)](https://maven.apache.org)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
+[![Views](https://komarev.com/ghpvc/?username=C00LN3T-Log4ShellAuditor&style=for-the-badge&label=views&color=007ec6)](https://github.com/C00LN3T/Log4ShellAuditor)
 
 ---
 

@@ -1,0 +1,23 @@
+name: GitHub Clone Count Badge
+
+on:
+  schedule:
+    - cron: "0 */12 * * *" # Runs every 12 hours to update stats
+  workflow_dispatch: # Allows manual trigger via GitHub Action UI
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Fetch Clone Count and Create Badge
+        uses: MShawon/github-clone-count-badge@v1.2.0
+        with:
+          action: create
+          gh_token: ${{ secrets.GH_PAT }}
+          repository: C00LN3T/Log4ShellAuditor
+          page: README.md
+          style: for-the-badge
+          color: 007ec6
