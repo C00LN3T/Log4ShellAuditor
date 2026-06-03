@@ -8,7 +8,8 @@
 [![Java Version](https://img.shields.io/badge/Java-17+-ED8B00?style=for-the-badge&logo=openjdk)](https://openjdk.org)
 [![Maven](https://img.shields.io/badge/Maven-3.8+-C71A36?style=for-the-badge&logo=apachemaven)](https://maven.apache.org)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
-[![Views](https://komarev.com/ghpvc/?username=C00LN3T-Log4ShellAuditor&style=for-the-badge&label=views&color=007ec6)](https://github.com/C00LN3T/Log4ShellAuditor)
+[![Views](https://img.shields.io/badge/dynamic/json?color=007ec6&label=views&query=%24.count&url=https%3A%2F%2Fraw.githubusercontent.com%2FC00LN3T%2FLog4ShellAuditor%2Ftraffic%2Ftraffic%2FC00LN3T%2FLog4ShellAuditor%2Fviews.json&style=for-the-badge)](https://github.com/C00LN3T/Log4ShellAuditor/graphs/traffic)
+[![Clones](https://img.shields.io/badge/dynamic/json?color=007ec6&label=clones&query=%24.count&url=https%3A%2F%2Fraw.githubusercontent.com%2FC00LN3T%2FLog4ShellAuditor%2Ftraffic%2Ftraffic%2FC00LN3T%2FLog4ShellAuditor%2Fclones.json&style=for-the-badge)](https://github.com/C00LN3T/Log4ShellAuditor/graphs/traffic)
 
 ---
 
