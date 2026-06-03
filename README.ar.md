@@ -1,4 +1,4 @@
-p align="center">
+<p align="center">
   <img src=".github/assets/banner.png" alt="AUTO AUDIT Banner" width="900" style="border-radius: 8px;">
 </p>
 
