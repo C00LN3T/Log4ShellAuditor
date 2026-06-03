@@ -19,6 +19,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Set Traffic Data
+        id: traffic
         uses: yi-Xu-0100/traffic-to-badge@v1.4.0
         with:
           my_token: ${{ secrets.GH_PAT }}
@@ -31,5 +32,5 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./traffic
-          publish_branch: traffic
+          publish_dir: ${{ steps.traffic.outputs.traffic_path }}
+          publish_branch: ${{ steps.traffic.outputs.traffic_branch }}
