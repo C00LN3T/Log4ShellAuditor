@@ -1,36 +1,66 @@
-# 🤖 AUTO AUDIT: Autonomous Reactive Pentest Agent
+<p align="center">
+  <img src=".github/assets/banner.png" alt="AUTO AUDIT Banner" width="900" style="border-radius: 8px;">
+</p>
 
-*Read this in other languages: [English](README.en.md), [Русский](README.md).*
+<h1 align="center">🤖 AUTO AUDIT</h1>
 
-> **Изолированный демонстрационный стенд автономного рефлексивного агента-исполнителя (Go/Java)**
+<p align="center">
+  <b>Изолированный демонстрационный стенд автономного рефлексивного агента-исполнителя (Go/Java)</b>
+</p>
 
-[![Go Version](https://img.shields.io/badge/Go-1.21+-00ADD8?style=for-the-badge&logo=go)](https://golang.org)
-[![Java Version](https://img.shields.io/badge/Java-17+-ED8B00?style=for-the-badge&logo=openjdk)](https://openjdk.org)
-[![Maven](https://img.shields.io/badge/Maven-3.8+-C71A36?style=for-the-badge&logo=apachemaven)](https://maven.apache.org)
-[![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
-[![Views](https://img.shields.io/badge/dynamic/json?color=007ec6&label=views&query=%24.count&url=https%3A%2F%2Fraw.githubusercontent.com%2FC00LN3T%2FLog4ShellAuditor%2Ftraffic%2Ftraffic%2FC00LN3T%2FLog4ShellAuditor%2Fviews.json&style=for-the-badge)](https://github.com/C00LN3T/Log4ShellAuditor/graphs/traffic)
-[![Clones](https://img.shields.io/badge/dynamic/json?color=007ec6&label=clones&query=%24.count&url=https%3A%2F%2Fraw.githubusercontent.com%2FC00LN3T%2FLog4ShellAuditor%2Ftraffic%2Ftraffic%2FC00LN3T%2FLog4ShellAuditor%2Fclones.json&style=for-the-badge)](https://github.com/C00LN3T/Log4ShellAuditor/graphs/traffic)
+<p align="center">
+  <a href="README.md"><b>Русский 🇷🇺</b></a> • <a href="README.en.md"><b>English 🇬🇧</b></a>
+</p>
+
+<p align="center">
+  <a href="https://golang.org"><img src="https://img.shields.io/badge/Go-1.21+-00ADD8?style=for-the-badge&logo=go" alt="Go Version"></a>
+  <a href="https://openjdk.org"><img src="https://img.shields.io/badge/Java-17+-ED8B00?style=for-the-badge&logo=openjdk" alt="Java Version"></a>
+  <a href="https://maven.apache.org"><img src="https://img.shields.io/badge/Maven-3.8+-C71A36?style=for-the-badge&logo=apachemaven" alt="Maven"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License"></a>
+  <a href="https://github.com/C00LN3T/Log4ShellAuditor/graphs/traffic"><img src="https://img.shields.io/badge/dynamic/json?color=007ec6&label=views&query=%24.count&url=https%3A%2F%2Fraw.githubusercontent.com%2FC00LN3T%2FLog4ShellAuditor%2Ftraffic%2Ftraffic%2FC00LN3T%2FLog4ShellAuditor%2Fviews.json&style=for-the-badge" alt="Views"></a>
+  <a href="https://github.com/C00LN3T/Log4ShellAuditor/graphs/traffic"><img src="https://img.shields.io/badge/dynamic/json?color=007ec6&label=clones&query=%24.count&url=https%3A%2F%2Fraw.githubusercontent.com%2FC00LN3T%2FLog4ShellAuditor%2Ftraffic%2Ftraffic%2FC00LN3T%2FLog4ShellAuditor%2Fclones.json&style=for-the-badge" alt="Clones"></a>
+</p>
 
 ---
 
 ## 🧭 Общие сведения
 
-**AUTO AUDIT** — это программный комплекс, демонстрирующий **100% автономный замкнутый цикл (Sense-Think-Act)** выявления, проверки, эксплуатации, автоматического исправления (*Self-Healing / Auto-Remediation*) и комплаенс-отчетности для критической уязвимости **Log4Shell (CVE-2021-44228 / БДУ ФСТЭК:2021-06103)**.
+> [!NOTE]
+> **AUTO AUDIT** — это программный комплекс, демонстрирующий **100% автономный замкнутый цикл (Sense-Think-Act)** выявления, проверки, эксплуатации, автоматического исправления (*Self-Healing / Auto-Remediation*) и комплаенс-отчетности для критической уязвимости **Log4Shell (CVE-2021-44228 / БДУ ФСТЭК:2021-06103)**.
+>
+> Стенд развертывает локальное веб-приложение на базе **Java Spring Boot**, встроенный **LDAP TCP Callback Listener** и когнитивное ядро **Go-агента**, принимающего решения в условиях частичной наблюдаемости внешней среды (*Partially Observable Markov Decision Process — POMDP*).
 
-Стенд развертывает локальное веб-приложение на базе **Java Spring Boot**, встроенный **LDAP TCP Callback Listener** и когнитивное ядро **Go-агента**, принимающего решения в условиях частичной наблюдаемости внешней среды (*Partially Observable Markov Decision Process — POMDP*).
 
 ```mermaid
+%%{init: {
+  'theme': 'dark',
+  'themeVariables': {
+    'background': '#0f172a',
+    'primaryColor': '#1e293b',
+    'primaryTextColor': '#cbd5e1',
+    'primaryBorderColor': '#3b82f6',
+    'lineColor': '#38bdf8',
+    'secondaryColor': '#1e1b4b',
+    'tertiaryColor': '#0f172a',
+    'edgeLabelBackground': '#0f172a'
+  }
+}}%%
 graph TD
-    subgraph "СЕНСОРНЫЙ АНАЛИЗ (Sense)"
-        A[Внешние отклики / TCP-коллбеки] --> B(Обновление Базы Знаний)
+    classDef sense fill:#0284c7,stroke:#0ea5e9,stroke-width:2px,color:#fff;
+    classDef think fill:#4f46e5,stroke:#6366f1,stroke-width:2px,color:#fff;
+    classDef act fill:#059669,stroke:#10b981,stroke-width:2px,color:#fff;
+    classDef target fill:#dc2626,stroke:#ef4444,stroke-width:2px,color:#fff;
+
+    subgraph Sense ["🔍 СЕНСОРНЫЙ АНАЛИЗ (Sense)"]
+        A[Внешние отклики / TCP-коллбеки]:::sense --> B(Обновление Базы Знаний):::sense
     end
-    subgraph "КОГНИТИВНОЕ ЯДРО (Think)"
-        B --> C{Вычисление Utility Policy}
-        C -->|Рефлексивный вывод| D[Выбор эффектора из реестра]
+    subgraph Think ["🧠 КОГНИТИВНОЕ ЯДРО (Think)"]
+        B --> C{Вычисление Utility Policy}:::think
+        C -->|Рефлексивный вывод| D[Выбор эффектора из реестра]:::think
     end
-    subgraph "ИСПОЛНЕНИЕ (Act)"
-        D --> E[Выполнение Tool.Execute]
-        E -->|Воздействие| F((Java Spring Boot Target))
+    subgraph subgraph_Act ["⚡ ИСПОЛНЕНИЕ (Act)"]
+        D --> E[Выполнение Tool.Execute]:::act
+        E -->|Воздействие| F((Java Spring Boot Target)):::target
         F -.->|Обратный канал OOB| A
     end
 ```
@@ -41,22 +71,25 @@ graph TD
 
 Программная структура агента разработана в соответствии с принципами чистой архитектуры (*Hexagonal Architecture / Ports and Adapters*), SOLID и TDD:
 
-* **[cmd/agent/main.go](cmd/agent/main.go)** — Точка входа. Управляет жизненным циклом фоновых процессов и координирует запуск горутины агента.
-* **[internal/agent/agent.go](internal/agent/agent.go)** — Когнитивный контур. Реализует управляющий цикл и решающее правило выбора стратегии `Think()`.
-* **[internal/core/model.go](internal/core/model.go)** — Потокобезопасная база знаний (`KnowledgeBase` / LTM) на базе `sync.RWMutex`.
-* **[internal/core/effector.go](internal/core/effector.go)** — Интерфейс `Tool` для эффекторов.
-* **[internal/effectors/](internal/effectors/)** — Реестр полиморфных эффекторов (инструментов):
-  * `ToolPortScanner` — Разведка сетевого периметра.
-  * `ToolDiscovery` — Поиск точек сочленения и векторов ввода (`X-Api-Version`).
-  * `ToolPayloadGenerator` — Синтез сигнатурного вектора JNDI.
-  * `ToolProber` — Проверка уязвимости методом внеполосной (Out-of-Band) трассировки.
-  * `ToolSemanticFuzzer` — Обход классификаторов фильтрации (WAF Evasion) с помощью вложенных синтаксических мутаций.
-  * `ToolRemediator` — Автоматический патчинг.
-  * `ToolReporter` — Формирование отчета в соответствии с ГОСТ Р 56939-2016.
-* **[pkg/oob/](pkg/oob/)** — Out-of-band слушатели (LDAP и HTTP).
-* **[pkg/jvm/](pkg/jvm/)** — Управление жизненным циклом и перезапуском локальной Java-цели.
-* **[deployments/](deployments/)** — Конфигурационные файлы для развертывания (Docker, Compose).
-* **[test/vulnerable-app/](test/vulnerable-app/)** — Уязвимое тестовое Java Spring Boot приложение.
+* 📂 **[cmd/agent/main.go](cmd/agent/main.go)** — Точка входа. Управляет жизненным циклом фоновых процессов и координирует запуск горутины агента.
+* 📂 **`internal/`** — Основная бизнес-логика когнитивного контура:
+  * 🧠 **[agent/agent.go](internal/agent/agent.go)** — Когнитивный контур. Реализует управляющий цикл и решающее правило выбора стратегии `Think()`.
+  * 💾 **[core/model.go](internal/core/model.go)** — Потокобезопасная база знаний (`KnowledgeBase` / LTM) на базе `sync.RWMutex`.
+  * 🔌 **[core/effector.go](internal/core/effector.go)** — Интерфейс `Tool` для эффекторов.
+  * ⚙️ **[effectors/](internal/effectors/)** — Реестр полиморфных эффекторов (инструментов):
+    * 🔍 `ToolPortScanner` — Разведка сетевого периметра.
+    * 🌐 `ToolDiscovery` — Поиск точек сочленения и векторов ввода (`X-Api-Version`).
+    * 🔬 `ToolPayloadGenerator` — Синтез сигнатурного вектора JNDI.
+    * 🚀 `ToolProber` — Проверка уязвимости методом внеполосной (Out-of-Band) трассировки.
+    * 🛡️ `ToolSemanticFuzzer` — Обход классификаторов фильтрации (WAF Evasion) с помощью вложенных синтаксических мутаций.
+    * 🩹 `ToolRemediator` — Автоматический патчинг (Self-Healing).
+    * 📄 `ToolReporter` — Формирование отчета в соответствии с ГОСТ Р 56939-2016.
+* 📂 **`pkg/`** — Служебные пакеты и библиотеки:
+  * 📡 **[oob/](pkg/oob/)** — Out-of-band слушатели (LDAP и HTTP).
+  * ☕ **[jvm/](pkg/jvm/)** — Управление жизненным циклом и перезапуском локальной Java-цели.
+* 📂 **[deployments/](deployments/)** — Конфигурационные файлы для развертывания (Docker, Compose).
+* 📂 **[test/vulnerable-app/](test/vulnerable-app/)** — Уязвимое тестовое Java Spring Boot приложение.
+
 
 ---
 
@@ -109,28 +142,44 @@ $$\text{EfficiencyScore}(a) = \frac{SuccessCount_a}{UsageCount_a}$$
 Данная схема описывает непрерывный жизненный цикл функционирования агента: от запуска и инициализации базы знаний до завершения сессии аудита.
 
 ```mermaid
+%%{init: {
+  'theme': 'dark',
+  'themeVariables': {
+    'background': '#0f172a',
+    'primaryColor': '#1e293b',
+    'primaryTextColor': '#cbd5e1',
+    'primaryBorderColor': '#475569',
+    'lineColor': '#38bdf8',
+    'secondaryColor': '#1e293b'
+  }
+}}%%
 flowchart TD
-    Start([Начало]) --> Init[Инициализация StandaloneExecutor и KnowledgeBase]
-    Init --> LoopStart{Цикл принятия решений}
+    classDef startEnd fill:#1e293b,stroke:#475569,stroke-width:2px,color:#f8fafc;
+    classDef step fill:#0f172a,stroke:#3b82f6,stroke-width:1px,color:#e2e8f0;
+    classDef decision fill:#1e1b4b,stroke:#6366f1,stroke-width:1px,color:#e2e8f0;
+    classDef action fill:#022c22,stroke:#10b981,stroke-width:1px,color:#e2e8f0;
+
+    Start([Начало]):::startEnd --> Init[Инициализация StandaloneExecutor и KnowledgeBase]:::step
+    Init --> LoopStart{Цикл принятия решений}:::decision
     
     %% Think Phase
-    LoopStart --> Think["Think: Выбор оптимального инструмента a = Think()"]
+    LoopStart --> Think["Think: Выбор оптимального инструмента a = Think()"]:::decision
     
     %% Branch on Stop
-    Think --> IsStop{a == 'stop'?}
-    IsStop -- Да --> Terminate([Завершение работы агента])
+    Think --> IsStop{a == 'stop'?}:::decision
+    IsStop -- Да --> Terminate([Завершение работы агента]):::startEnd
     
     %% Act Phase
-    IsStop -- Нет --> FetchTool["Загрузка эффектора из реестра Tools[a]"]
-    FetchTool --> Execute[Act: Выполнение Tool.Execute]
+    IsStop -- Нет --> FetchTool["Загрузка эффектора из реестра Tools[a]"]:::step
+    FetchTool --> Execute[Act: Выполнение Tool.Execute]:::action
     
     %% Sense Phase
-    Execute --> Sense[Sense: Получение обратной связи из внешней среды]
-    Sense --> UpdateStats[Обновление статистики ToolStats в памяти]
-    UpdateStats --> RecordObs[Запись наблюдения в Observations]
+    Execute --> Sense[Sense: Получение обратной связи из внешней среды]:::action
+    Sense --> UpdateStats[Обновление статистики ToolStats в памяти]:::step
+    UpdateStats --> RecordObs[Запись наблюдения в Observations]:::step
     
     %% Wait
-    RecordObs --> Delay[Задержка 800 мс]
+    RecordObs --> Delay[Задержка 800 мс]:::step
     Delay --> LoopStart
 ```
 
@@ -138,48 +187,64 @@ flowchart TD
 Данная схема детально описывает логику выбора следующего шага на основе текущего накопленного вектора доверия (Belief State) внутри функции `Think()`:
 
 ```mermaid
+%%{init: {
+  'theme': 'dark',
+  'themeVariables': {
+    'background': '#0f172a',
+    'primaryColor': '#1e293b',
+    'primaryTextColor': '#cbd5e1',
+    'primaryBorderColor': '#475569',
+    'lineColor': '#38bdf8',
+    'secondaryColor': '#1e293b'
+  }
+}}%%
 flowchart TD
-    Start(["Вызов Think()"]) --> Lock["Блокировка памяти RLock()"]
-    Lock --> ReadState[Чтение вектора доверия b]
+    classDef startEnd fill:#1e293b,stroke:#475569,stroke-width:2px,color:#f8fafc;
+    classDef process fill:#0f172a,stroke:#3b82f6,stroke-width:1px,color:#e2e8f0;
+    classDef decision fill:#1e1b4b,stroke:#6366f1,stroke-width:1px,color:#e2e8f0;
+    classDef selection fill:#064e3b,stroke:#10b981,stroke-width:1px,color:#e2e8f0;
+
+    Start(["Вызов Think()"]):::startEnd --> Lock["Блокировка памяти RLock()"]:::process
+    Lock --> ReadState[Чтение вектора доверия b]:::process
     
     %% Step 1
-    ReadState --> PortScan{port_scanner выполнен?}
-    PortScan -- Нет --> RetPortScan[Выбрать 'port_scanner']
+    ReadState --> PortScan{port_scanner выполнен?}:::decision
+    PortScan -- Нет --> RetPortScan[Выбрать 'port_scanner']:::selection
     
     %% Step 2
-    PortScan -- Да --> Discovery{Найдено векторов ввода?}
-    Discovery -- Нет --> RetDiscovery[Выбрать 'discovery']
+    PortScan -- Да --> Discovery{Найдено векторов ввода?}:::decision
+    Discovery -- Нет --> RetDiscovery[Выбрать 'discovery']:::selection
     
     %% Step 3
-    Discovery -- Да --> Payload{Сгенерирована эксплоит-сигнатура?}
-    Payload -- Нет --> RetPayload[Выбрать 'payload_generator']
+    Discovery -- Да --> Payload{Сгенерирована эксплоит-сигнатура?}:::decision
+    Payload -- Нет --> RetPayload[Выбрать 'payload_generator']:::selection
     
     %% Step 4 (Exploit)
-    Payload -- Да --> Loot{Флаг RCE перехвачен?}
-    Loot -- Нет --> ProberStats{Была попытка prober?}
+    Payload -- Да --> Loot{Флаг RCE перехвачен?}:::decision
+    Loot -- Нет --> ProberStats{Была попытка prober?}:::decision
     
-    ProberStats -- Нет --> RetProber[Выбрать 'prober']
-    ProberStats -- Да --> FuzzerStats{Fuzzer выполнен?}
-    FuzzerStats -- Нет --> RetFuzzer[Выбрать 'semantic_fuzzer']
-    FuzzerStats -- Да --> RetProber
+    ProberStats -- Нет --> RetProber[Выбрать 'prober']:::selection
+    ProberStats -- Да --> FuzzerStats{Fuzzer выполнен?}:::decision
+    FuzzerStats -- Нет --> RetFuzzer[Выбрать 'semantic_fuzzer']:::selection
+    FuzzerStats -- Да --> RetProber:::selection
     
     %% Step 5
-    Loot -- Да --> Patch{Патч применен?}
-    Patch -- Нет --> RetRemediator[Выбрать 'remediator']
+    Loot -- Да --> Patch{Патч применен?}:::decision
+    Patch -- Нет --> RetRemediator[Выбрать 'remediator']:::selection
     
     %% Step 6
-    Patch -- Да --> Verify{Патч верифицирован?}
-    Verify -- Нет --> RetProberVerify[Выбрать 'prober' в режиме верификации]
+    Patch -- Да --> Verify{Патч верифицирован?}:::decision
+    Verify -- Нет --> RetProberVerify[Выбрать 'prober' в режиме верификации]:::selection
     
     %% Step 7
-    Verify -- Да --> Report{Отчет сформирован?}
-    Report -- Нет --> RetReporter[Выбрать 'reporter']
+    Verify -- Да --> Report{Отчет сформирован?}:::decision
+    Report -- Нет --> RetReporter[Выбрать 'reporter']:::selection
     
     %% Step 8
-    Report -- Да --> RetStop[Выбрать 'stop']
+    Report -- Да --> RetStop[Выбрать 'stop']:::selection
     
     %% Return Statements
-    RetPortScan --> Unlock["Разблокировка RUnlock()"]
+    RetPortScan --> Unlock["Разблокировка RUnlock()"]:::process
     RetDiscovery --> Unlock
     RetPayload --> Unlock
     RetProber --> Unlock
@@ -189,7 +254,7 @@ flowchart TD
     RetReporter --> Unlock
     RetStop --> Unlock
     
-    Unlock --> End([Возврат выбранного инструмента])
+    Unlock --> End([Возврат выбранного инструмента]):::startEnd
 ```
 
 ---
@@ -257,7 +322,9 @@ go build -o test_agent ./cmd/agent
 
 ### Вариант Б. Запуск в изолированном Docker-окружении (Docker Compose)
 
-Этот вариант не требует установки Go, Java или Maven на вашей хост-системе. Всё окружение собирается и оркеструется автоматически в изолированной виртуальной сети `172.20.0.0/16`.
+> [!TIP]
+> Этот вариант не требует установки Go, Java или Maven на вашей хост-системе. Всё окружение собирается и оркеструется автоматически в изолированной виртуальной сети `172.20.0.0/16`.
+
 
 #### Предварительные требования
 * Установленный **Docker** и плагин **Docker Compose** (проверьте через `docker compose version`).

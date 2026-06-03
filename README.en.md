@@ -1,36 +1,66 @@
-# 🤖 AUTO AUDIT: Autonomous Reactive Pentest Agent
+<p align="center">
+  <img src=".github/assets/banner.png" alt="AUTO AUDIT Banner" width="900" style="border-radius: 8px;">
+</p>
 
-*Read this in other languages: [English](README.en.md), [Русский](README.md).*
+<h1 align="center">🤖 AUTO AUDIT</h1>
 
-> **Isolated demonstration lab of an autonomous reactive executor agent (Go/Java)**
+<p align="center">
+  <b>Isolated demonstration lab of an autonomous reactive executor agent (Go/Java)</b>
+</p>
 
-[![Go Version](https://img.shields.io/badge/Go-1.21+-00ADD8?style=for-the-badge&logo=go)](https://golang.org)
-[![Java Version](https://img.shields.io/badge/Java-17+-ED8B00?style=for-the-badge&logo=openjdk)](https://openjdk.org)
-[![Maven](https://img.shields.io/badge/Maven-3.8+-C71A36?style=for-the-badge&logo=apachemaven)](https://maven.apache.org)
-[![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
-[![Views](https://img.shields.io/badge/dynamic/json?color=007ec6&label=views&query=%24.count&url=https%3A%2F%2Fraw.githubusercontent.com%2FC00LN3T%2FLog4ShellAuditor%2Ftraffic%2Ftraffic%2FC00LN3T%2FLog4ShellAuditor%2Fviews.json&style=for-the-badge)](https://github.com/C00LN3T/Log4ShellAuditor/graphs/traffic)
-[![Clones](https://img.shields.io/badge/dynamic/json?color=007ec6&label=clones&query=%24.count&url=https%3A%2F%2Fraw.githubusercontent.com%2FC00LN3T%2FLog4ShellAuditor%2Ftraffic%2Ftraffic%2FC00LN3T%2FLog4ShellAuditor%2Fclones.json&style=for-the-badge)](https://github.com/C00LN3T/Log4ShellAuditor/graphs/traffic)
+<p align="center">
+  <a href="README.md"><b>Русский 🇷🇺</b></a> • <a href="README.en.md"><b>English 🇬🇧</b></a>
+</p>
+
+<p align="center">
+  <a href="https://golang.org"><img src="https://img.shields.io/badge/Go-1.21+-00ADD8?style=for-the-badge&logo=go" alt="Go Version"></a>
+  <a href="https://openjdk.org"><img src="https://img.shields.io/badge/Java-17+-ED8B00?style=for-the-badge&logo=openjdk" alt="Java Version"></a>
+  <a href="https://maven.apache.org"><img src="https://img.shields.io/badge/Maven-3.8+-C71A36?style=for-the-badge&logo=apachemaven" alt="Maven"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License"></a>
+  <a href="https://github.com/C00LN3T/Log4ShellAuditor/graphs/traffic"><img src="https://img.shields.io/badge/dynamic/json?color=007ec6&label=views&query=%24.count&url=https%3A%2F%2Fraw.githubusercontent.com%2FC00LN3T%2FLog4ShellAuditor%2Ftraffic%2Ftraffic%2FC00LN3T%2FLog4ShellAuditor%2Fviews.json&style=for-the-badge" alt="Views"></a>
+  <a href="https://github.com/C00LN3T/Log4ShellAuditor/graphs/traffic"><img src="https://img.shields.io/badge/dynamic/json?color=007ec6&label=clones&query=%24.count&url=https%3A%2F%2Fraw.githubusercontent.com%2FC00LN3T%2FLog4ShellAuditor%2Ftraffic%2Ftraffic%2FC00LN3T%2FLog4ShellAuditor%2Fclones.json&style=for-the-badge" alt="Clones"></a>
+</p>
 
 ---
 
 ## 🧭 Overview
 
-**AUTO AUDIT** is a software system demonstrating a **100% autonomous closed-loop (Sense-Think-Act)** cycle of vulnerability discovery, validation, exploitation, auto-remediation (self-healing), and compliance reporting for the critical **Log4Shell** vulnerability (**CVE-2021-44228**).
+> [!NOTE]
+> **AUTO AUDIT** is a software system demonstrating a **100% autonomous closed-loop (Sense-Think-Act)** cycle of vulnerability discovery, validation, exploitation, auto-remediation (self-healing), and compliance reporting for the critical **Log4Shell** vulnerability (**CVE-2021-44228**).
+>
+> The sandbox spawns a local target web application built on **Java Spring Boot**, an embedded **LDAP TCP Callback Listener**, and a cognitive **Go agent** kernel, which coordinates actions in a partially observable environment (*Partially Observable Markov Decision Process — POMDP*).
 
-The sandbox spawns a local target web application built on **Java Spring Boot**, an embedded **LDAP TCP Callback Listener**, and a cognitive **Go agent** kernel, which coordinates actions in a partially observable environment (*Partially Observable Markov Decision Process — POMDP*).
 
 ```mermaid
+%%{init: {
+  'theme': 'dark',
+  'themeVariables': {
+    'background': '#0f172a',
+    'primaryColor': '#1e293b',
+    'primaryTextColor': '#cbd5e1',
+    'primaryBorderColor': '#3b82f6',
+    'lineColor': '#38bdf8',
+    'secondaryColor': '#1e1b4b',
+    'tertiaryColor': '#0f172a',
+    'edgeLabelBackground': '#0f172a'
+  }
+}}%%
 graph TD
-    subgraph "SENSORY ANALYSIS (Sense)"
-        A[External responses / TCP callbacks] --> B(Update Knowledge Base)
+    classDef sense fill:#0284c7,stroke:#0ea5e9,stroke-width:2px,color:#fff;
+    classDef think fill:#4f46e5,stroke:#6366f1,stroke-width:2px,color:#fff;
+    classDef act fill:#059669,stroke:#10b981,stroke-width:2px,color:#fff;
+    classDef target fill:#dc2626,stroke:#ef4444,stroke-width:2px,color:#fff;
+
+    subgraph Sense ["🔍 SENSORY ANALYSIS (Sense)"]
+        A[External responses / TCP callbacks]:::sense --> B(Update Knowledge Base):::sense
     end
-    subgraph "COGNITIVE CORE (Think)"
-        B --> C{Calculate Utility Policy}
-        C -->|Reflexive Inference| D[Select Effector from Registry]
+    subgraph Think ["🧠 COGNITIVE CORE (Think)"]
+        B --> C{Calculate Utility Policy}:::think
+        C -->|Reflexive Inference| D[Select Effector from Registry]:::think
     end
-    subgraph "EXECUTION (Act)"
-        D --> E[Execute Tool.Execute]
-        E -->|Impact| F((Java Spring Boot Target))
+    subgraph subgraph_Act ["⚡ EXECUTION (Act)"]
+        D --> E[Execute Tool.Execute]:::act
+        E -->|Impact| F((Java Spring Boot Target)):::target
         F -.->|Out-of-Band OOB Channel| A
     end
 ```
@@ -41,22 +71,25 @@ graph TD
 
 The agent's software structure is developed following Hexagonal Architecture (Ports and Adapters), SOLID, and TDD principles:
 
-* **[cmd/agent/main.go](cmd/agent/main.go)** — Entrypoint. Manages background service lifecycles and coordinates the main agent loop.
-* **[internal/agent/agent.go](internal/agent/agent.go)** — Cognitive engine. Implements the decision-making policy and agent loop.
-* **[internal/core/model.go](internal/core/model.go)** — Thread-safe `KnowledgeBase` (LTM) based on a `sync.RWMutex`.
-* **[internal/core/effector.go](internal/core/effector.go)** — `Tool` interface for effectors.
-* **[internal/effectors/](internal/effectors/)** — Polymorphic effectors (tools) registry:
-  * `ToolPortScanner` — Reconnaissance and network port scanning.
-  * `ToolDiscovery` — Web app parameter mapping and input vectors parsing (`X-Api-Version`).
-  * `ToolPayloadGenerator` — Synthesizes JNDI signature vectors.
-  * `ToolProber` — Out-of-Band (OOB) vulnerability verification.
-  * `ToolSemanticFuzzer` — Obfuscation mutations (WAF Evasion) via nested lookups.
-  * `ToolRemediator` — Automated hot patching.
-  * `ToolReporter` — Security audit report generation.
-* **[pkg/oob/](pkg/oob/)** — Out-of-band LDAP and HTTP servers.
-* **[pkg/jvm/](pkg/jvm/)** — Manages compiled local Java simulation target process.
-* **[deployments/](deployments/)** — Contains Docker and Compose configuration files.
-* **[test/vulnerable-app/](test/vulnerable-app/)** — Target vulnerable Java Spring Boot microservice.
+* 📂 **[cmd/agent/main.go](cmd/agent/main.go)** — Entrypoint. Manages background service lifecycles and coordinates the main agent loop.
+* 📂 **`internal/`** — Core business logic of the cognitive circuit:
+  * 🧠 **[agent/agent.go](internal/agent/agent.go)** — Cognitive engine. Implements the decision-making policy and agent loop.
+  * 💾 **[core/model.go](internal/core/model.go)** — Thread-safe `KnowledgeBase` (LTM) based on a `sync.RWMutex`.
+  * 🔌 **[core/effector.go](internal/core/effector.go)** — `Tool` interface for effectors.
+  * ⚙️ **[effectors/](internal/effectors/)** — Polymorphic effectors (tools) registry:
+    * 🔍 `ToolPortScanner` — Reconnaissance and network port scanning.
+    * 🌐 `ToolDiscovery` — Web app parameter mapping and input vectors parsing (`X-Api-Version`).
+    * 🔬 `ToolPayloadGenerator` — Synthesizes JNDI signature vectors.
+    * 🚀 `ToolProber` — Out-of-Band (OOB) vulnerability verification.
+    * 🛡️ `ToolSemanticFuzzer` — Obfuscation mutations (WAF Evasion) via nested lookups.
+    * 🩹 `ToolRemediator` — Automated hot patching (Self-Healing).
+    * 📄 `ToolReporter` — Security audit report generation.
+* 📂 **`pkg/`** — Shared modules and utilities:
+  * 📡 **[oob/](pkg/oob/)** — Out-of-band LDAP and HTTP servers.
+  * ☕ **[jvm/](pkg/jvm/)** — Manages compiled local Java simulation target process.
+* 📂 **[deployments/](deployments/)** — Contains Docker and Compose configuration files.
+* 📂 **[test/vulnerable-app/](test/vulnerable-app/)** — Target vulnerable Java Spring Boot microservice.
+
 
 ---
 
@@ -109,28 +142,44 @@ This is leveraged for adaptive pathfinding: if the initial exploitation attempt 
 This diagram illustrates the continuous runtime lifecycle of the agent, starting from initialization up to compliance report compilation and session shutdown.
 
 ```mermaid
+%%{init: {
+  'theme': 'dark',
+  'themeVariables': {
+    'background': '#0f172a',
+    'primaryColor': '#1e293b',
+    'primaryTextColor': '#cbd5e1',
+    'primaryBorderColor': '#475569',
+    'lineColor': '#38bdf8',
+    'secondaryColor': '#1e293b'
+  }
+}}%%
 flowchart TD
-    Start([Start]) --> Init[Initialize StandaloneExecutor and KnowledgeBase]
-    Init --> LoopStart{Cognitive Loop}
+    classDef startEnd fill:#1e293b,stroke:#475569,stroke-width:2px,color:#f8fafc;
+    classDef step fill:#0f172a,stroke:#3b82f6,stroke-width:1px,color:#e2e8f0;
+    classDef decision fill:#1e1b4b,stroke:#6366f1,stroke-width:1px,color:#e2e8f0;
+    classDef action fill:#022c22,stroke:#10b981,stroke-width:1px,color:#e2e8f0;
+
+    Start([Start]):::startEnd --> Init[Initialize StandaloneExecutor and KnowledgeBase]:::step
+    Init --> LoopStart{Cognitive Loop}:::decision
     
     %% Think Phase
-    LoopStart --> Think["Think: Select optimal effector action a = Think()"]
+    LoopStart --> Think["Think: Select optimal effector action a = Think()"]:::decision
     
     %% Branch on Stop
-    Think --> IsStop{a == 'stop'?}
-    IsStop -- Yes --> Terminate([Agent Loop Terminated])
+    Think --> IsStop{a == 'stop'?}:::decision
+    IsStop -- Yes --> Terminate([Agent Loop Terminated]):::startEnd
     
     %% Act Phase
-    IsStop -- No --> FetchTool["Retrieve effector from Tools[a] registry"]
-    FetchTool --> Execute[Act: Run Tool.Execute]
+    IsStop -- No --> FetchTool["Retrieve effector from Tools[a] registry"]:::step
+    FetchTool --> Execute[Act: Run Tool.Execute]:::action
     
     %% Sense Phase
-    Execute --> Sense[Sense: Capture environment feedback]
-    Sense --> UpdateStats[Update ToolStats utility values in Memory]
-    UpdateStats --> RecordObs[Record event in Observations]
+    Execute --> Sense[Sense: Capture environment feedback]:::action
+    Sense --> UpdateStats[Update ToolStats utility values in Memory]:::step
+    UpdateStats --> RecordObs[Record event in Observations]:::step
     
     %% Wait
-    RecordObs --> Delay[Wait 800 ms]
+    RecordObs --> Delay[Wait 800 ms]:::step
     Delay --> LoopStart
 ```
 
@@ -138,48 +187,64 @@ flowchart TD
 This diagram maps out the precise decision logic executed by the `Think()` function at each iteration of the loop, based on the current Belief State:
 
 ```mermaid
+%%{init: {
+  'theme': 'dark',
+  'themeVariables': {
+    'background': '#0f172a',
+    'primaryColor': '#1e293b',
+    'primaryTextColor': '#cbd5e1',
+    'primaryBorderColor': '#475569',
+    'lineColor': '#38bdf8',
+    'secondaryColor': '#1e293b'
+  }
+}}%%
 flowchart TD
-    Start(["Think() invoked"]) --> Lock["Acquire memory RLock()"]
-    Lock --> ReadState[Read Belief State b]
+    classDef startEnd fill:#1e293b,stroke:#475569,stroke-width:2px,color:#f8fafc;
+    classDef process fill:#0f172a,stroke:#3b82f6,stroke-width:1px,color:#e2e8f0;
+    classDef decision fill:#1e1b4b,stroke:#6366f1,stroke-width:1px,color:#e2e8f0;
+    classDef selection fill:#064e3b,stroke:#10b981,stroke-width:1px,color:#e2e8f0;
+
+    Start(["Think() invoked"]):::startEnd --> Lock["Acquire memory RLock()"]:::process
+    Lock --> ReadState[Read Belief State b]:::process
     
     %% Step 1
-    ReadState --> PortScan{port_scanner run?}
-    PortScan -- No --> RetPortScan[Select 'port_scanner']
+    ReadState --> PortScan{port_scanner run?}:::decision
+    PortScan -- No --> RetPortScan[Select 'port_scanner']:::selection
     
     %% Step 2
-    PortScan -- Yes --> Discovery{Any input vectors found?}
-    Discovery -- No --> RetDiscovery[Select 'discovery']
+    PortScan -- Yes --> Discovery{Any input vectors found?}:::decision
+    Discovery -- No --> RetDiscovery[Select 'discovery']:::selection
     
     %% Step 3
-    Discovery -- Yes --> Payload{Exploit payload generated?}
-    Payload -- No --> RetPayload[Select 'payload_generator']
+    Discovery -- Yes --> Payload{Exploit payload generated?}:::decision
+    Payload -- No --> RetPayload[Select 'payload_generator']:::selection
     
     %% Step 4 (Exploit)
-    Payload -- Yes --> Loot{RCE flag captured?}
-    Loot -- No --> ProberStats{prober previously tried?}
+    Payload -- Yes --> Loot{RCE flag captured?}:::decision
+    Loot -- No --> ProberStats{prober previously tried?}:::decision
     
-    ProberStats -- No --> RetProber[Select 'prober']
-    ProberStats -- Yes --> FuzzerStats{semantic_fuzzer run?}
-    FuzzerStats -- No --> RetFuzzer[Select 'semantic_fuzzer']
-    FuzzerStats -- Yes --> RetProber
+    ProberStats -- No --> RetProber[Select 'prober']:::selection
+    ProberStats -- Yes --> FuzzerStats{semantic_fuzzer run?}:::decision
+    FuzzerStats -- No --> RetFuzzer[Select 'semantic_fuzzer']:::selection
+    FuzzerStats -- Yes --> RetProber:::selection
     
     %% Step 5
-    Loot -- Yes --> Patch{Patch applied?}
-    Patch -- No --> RetRemediator[Select 'remediator']
+    Loot -- Yes --> Patch{Patch applied?}:::decision
+    Patch -- No --> RetRemediator[Select 'remediator']:::selection
     
     %% Step 6
-    Patch -- Yes --> Verify{Patch verified?}
-    Verify -- No --> RetProberVerify[Select 'prober' in verification mode]
+    Patch -- Yes --> Verify{Patch verified?}:::decision
+    Verify -- No --> RetProberVerify[Select 'prober' in verification mode]:::selection
     
     %% Step 7
-    Verify -- Yes --> Report{Report generated?}
-    Report -- No --> RetReporter[Select 'reporter']
+    Verify -- Yes --> Report{Report generated?}:::decision
+    Report -- No --> RetReporter[Select 'reporter']:::selection
     
     %% Step 8
-    Report -- Yes --> RetStop[Select 'stop']
+    Report -- Yes --> RetStop[Select 'stop']:::selection
     
     %% Return Statements
-    RetPortScan --> Unlock["Release memory RUnlock()"]
+    RetPortScan --> Unlock["Release memory RUnlock()"]:::process
     RetDiscovery --> Unlock
     RetPayload --> Unlock
     RetProber --> Unlock
@@ -189,7 +254,7 @@ flowchart TD
     RetReporter --> Unlock
     RetStop --> Unlock
     
-    Unlock --> End([Return selected tool identifier])
+    Unlock --> End([Return selected tool identifier]):::startEnd
 ```
 
 ---
@@ -257,7 +322,9 @@ go build -o test_agent ./cmd/agent
 
 ### Option B. Run in Isolated Container Sandbox (Docker Compose)
 
-This method does not require installing Go, Java, or Maven on your host machine. The entire lab setup builds and runs automatically inside an isolated virtual network sub-segmented at `172.20.0.0/16`.
+> [!TIP]
+> This method does not require installing Go, Java, or Maven on your host machine. The entire lab setup builds and runs automatically inside an isolated virtual network sub-segmented at `172.20.0.0/16`.
+
 
 #### Prerequisites
 * **Docker** and **Docker Compose** plugin installed (verify via `docker compose version`).
